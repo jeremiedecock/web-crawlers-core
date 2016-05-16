@@ -33,6 +33,7 @@ import argparse
 from bs4 import BeautifulSoup
 import urllib
 from urllib.parse import urljoin
+import sys
 
 import webcrawlers.crawler
 from webcrawlers.deadlinks.http_headers import HTTP_HEADERS
@@ -44,14 +45,15 @@ class DeadLinksNode(webcrawlers.crawler.Node):
 
         self.url = url
         self.depth = depth
+        self.html = None
 
         # Get HTML with a customized user-agent
         print("Request", self.url)
         try:
             self.html = webcrawlers.crawler.download_html(self.url, HTTP_HEADERS)
         except urllib.error.URLError as err:
-            # TODO: detect and report deadlinks here
-            print("*** ERROR: ", err)
+            # TODO: detect and report deadlinks here ? or in self.visit ?
+            print("*** ERROR: ", err, file=sys.stderr)
 
 
     @property
@@ -80,7 +82,7 @@ class DeadLinksNode(webcrawlers.crawler.Node):
     @property
     def is_final(self):
         # TODO: if self.url start with self.allowed_url_roots return True
-        return self.depth >= 2
+        return (self.html is None) or (self.depth >= 2)
 
 
 def main():
