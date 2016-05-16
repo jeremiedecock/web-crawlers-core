@@ -40,4 +40,5 @@
 #
 __version__ = '0.1.dev1'
 
-__all__ = ['fun']
+__all__ = ['crawler',
+           'deadlinks']
