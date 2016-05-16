@@ -31,6 +31,7 @@
 
 import argparse
 from bs4 import BeautifulSoup
+import urllib
 from urllib.parse import urljoin
 
 import webcrawlers.crawler
@@ -46,7 +47,11 @@ class DeadLinksNode(webcrawlers.crawler.Node):
 
         # Get HTML with a customized user-agent
         print("Request", self.url)
-        self.html = webcrawlers.crawler.download_html(self.url, HTTP_HEADERS)
+        try:
+            self.html = webcrawlers.crawler.download_html(self.url, HTTP_HEADERS)
+        except urllib.error.URLError as err:
+            # TODO: detect and report deadlinks here
+            print("*** ERROR: ", err)
 
 
     @property
