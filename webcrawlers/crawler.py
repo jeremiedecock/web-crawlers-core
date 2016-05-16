@@ -48,9 +48,14 @@ class Node:
     traversed_nodes = []
 
     def __init__(self, url, depth=0):
+        print("Creating node (level {}) {}...".format(depth, url))
+
         self.url = url
-        self.html = urllib.request.urlopen(self.url).read()
         self.depth = depth
+
+        print("Request", self.url)
+        self.html = urllib.request.urlopen(self.url).read()
+
 
     @property
     def child_nodes(self):
@@ -69,6 +74,7 @@ class Node:
 
         return child_nodes_set
 
+
     def visit(self):
         """Do something with node value."""
         print("Visiting {}...".format(self.url))
@@ -76,9 +82,10 @@ class Node:
         # Wait a litte bit
         time.sleep(TIME_SLEEP)      # TODO: randomize time sleep
 
+
     @property
     def is_final(self):
-        return False
+        return self.depth >= 1
 
     def __str__(self):
         return "%s" % self.url
@@ -137,7 +144,7 @@ def main():
 
     # PARSE OPTIONS ###########################################################
 
-    parser = argparse.ArgumentParser(description='A BeautifulSoup snippet.')
+    parser = argparse.ArgumentParser(description='Generic web crawler.')
     parser.add_argument("url", nargs=1, metavar="URL",
                         help="The URL of the webpage to parse.")
     args = parser.parse_args()
