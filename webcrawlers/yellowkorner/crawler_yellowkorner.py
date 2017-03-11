@@ -72,25 +72,25 @@ class GalleryNode(crawler.Node):
         #    out_file.write(self.html)
 
 
-    @property
-    def is_final(self):
-        return self.page_number < 1
-
-
-    @property
-    def child_nodes(self):
-        child_nodes_set = set()
-
-        if not self.is_final:
-            child_page_number = self.page_number - 1
-            start = child_page_number * 24
-            child_url = URL_DOMAIN + "?sz=24&start=" + str(start)
-
-            child_node = GalleryNode(child_url, child_page_number)
-
-            child_nodes_set.add(child_node)
-
-        return child_nodes_set
+#    @property
+#    def is_final(self):
+#        return self.page_number < 1
+#
+#
+#    @property
+#    def child_nodes(self):
+#        child_nodes_set = set()
+#
+#        if not self.is_final:
+#            child_page_number = self.page_number - 1
+#            start = child_page_number * 24
+#            child_url = URL_DOMAIN + "?sz=24&start=" + str(start)
+#
+#            child_node = GalleryNode(child_url, child_page_number)
+#
+#            child_nodes_set.add(child_node)
+#
+#        return child_nodes_set
 
 
     def visit(self):
@@ -141,22 +141,26 @@ class GalleryNode(crawler.Node):
 def main():
     """Main function"""
 
-    # PARSE OPTIONS ###########################################################
+    for page_number in range(84):
+        print()
+        print("PAGE NUMBER:", page_number)
+        print()
+        print()
 
-    #parser = argparse.ArgumentParser(description='Parse yellowkorner.')
-    #parser.add_argument("url", nargs=1, metavar="URL",
-    #                    help="The URL of the webpage to parse.")
-    #args = parser.parse_args()
+        start = max(0, (page_number - 1) * 24)
+        node = GalleryNode(URL_DOMAIN + "?sz=24&start=" + str(start),
+                           page_number=page_number)
+        node.visit()
 
-    # TRAVERSE THE GRAPH ######################################################
-
-    start_page_number = 83
-    start_node = GalleryNode(URL_DOMAIN + "?sz=24&start=" + str((start_page_number - 1) * 24),
-                             page_number=start_page_number)
-    crawler.walk(start_node)
-    #print(start_node.is_final)
-    #print(start_node.child_nodes)
-    #print(start_node.visit())
+#    # TRAVERSE THE GRAPH ######################################################
+#
+#    start_page_number = 83
+#    start_node = GalleryNode(URL_DOMAIN + "?sz=24&start=" + str((start_page_number - 1) * 24),
+#                             page_number=start_page_number)
+#    crawler.walk(start_node)
+#    #print(start_node.is_final)
+#    #print(start_node.child_nodes)
+#    #print(start_node.visit())
 
 if __name__ == '__main__':
     main()
