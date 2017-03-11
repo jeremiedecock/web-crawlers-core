@@ -115,17 +115,11 @@ class GalleryNode(crawler.Node):
                 print("NAME:", name)
                 print("IMG:", img_url)
                 
-                for s in " \t\n\"'\\#/|!?:&~()[]{}`*+$":
-                    s = s.replace(str, "")
-                    author = author.replace(s, '')
-                
+                author = re.sub('[^A-Za-z0-9 _-]+', '', author)
                 author = "-".join(author.lower().split())
                 author = "-".join(author.lower().split("-"))
 
-                for s in " \t\n\"'\\#/|!?:&~()[]{}`*+$":
-                    s = s.replace(str, "")
-                    name = name.replace(s, '')
-                
+                name = re.sub('[^A-Za-z0-9 _-]+', '', name)
                 name = "-".join(name.lower().split())
                 name = "-".join(name.lower().split("-"))
 
@@ -159,10 +153,10 @@ def main():
     start_page_number = 83
     start_node = GalleryNode(URL_DOMAIN + "?sz=24&start=" + str((start_page_number - 1) * 24),
                              page_number=start_page_number)
-    #crawler.walk(start_node)
+    crawler.walk(start_node)
     #print(start_node.is_final)
     #print(start_node.child_nodes)
-    print(start_node.visit())
+    #print(start_node.visit())
 
 if __name__ == '__main__':
     main()
