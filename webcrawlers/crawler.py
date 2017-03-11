@@ -32,6 +32,7 @@
 import argparse
 from bs4 import BeautifulSoup
 import gzip
+import shutil
 import time
 import urllib.request
 from urllib.parse import urljoin
@@ -137,6 +138,12 @@ def download_html(url, http_headers_dict={}):
             html = http_response.read()
 
     return html
+
+
+def download_img(img_url, img_output_path, http_headers_dict={}):
+    request = urllib.request.Request(img_url, data=None, headers= http_headers_dict)
+    with urllib.request.urlopen(request) as response, open(img_output_path, 'wb') as out_file:
+        shutil.copyfileobj(response, out_file)
 
 
 def main():
