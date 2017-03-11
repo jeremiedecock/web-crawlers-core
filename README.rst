@@ -78,7 +78,7 @@ MacOSX
 Note:
 
     The following installation procedure has been tested to work with Python
-    3.4 under MacOSX 10.6 (*Snow Leopard*).
+    3.5 under MacOSX 10.9 (*Mavericks*).
     It should also work with recent MacOSX systems.
 
 You can install, upgrade, uninstall Web Crawlers with these commands (in a

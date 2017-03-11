@@ -72,7 +72,8 @@ PACKAGES = ['webcrawlers']
 INSTALL_REQUIRES = []
 
 
-SCRIPTS = ["webcrawlers/deadlinks/crawler"]
+#SCRIPTS = ["webcrawlers/deadlinks/crawler"]
+SCRIPTS = []
 
 
 # Entry point can be used to create plugins or to automatically generate
