@@ -46,8 +46,8 @@ import crawler
 from http_headers_yellowkorner import HTTP_HEADERS,URL_DOMAIN
 
 # Waiting time parameters applied before getting the HTML code of the node
-INIT_MEAN_TIME_SLEEP = 5
-INIT_STD_TIME_SLEEP = 3
+INIT_MEAN_TIME_SLEEP = 4
+INIT_STD_TIME_SLEEP = 2
 
 # Waiting time parameters applied before downloading files (PDF, AVI, ...)
 MEAN_TIME_SLEEP = 1
@@ -100,42 +100,45 @@ class GalleryNode(crawler.Node):
         soup = BeautifulSoup(self.html)
         for ul_results_elem in soup.find_all(id='search-result-items'):
             for li_elem in ul_results_elem.find_all('li'):
-                author = ""
-                name = ""
-                img_url = ""
+                try:
+                    author = ""
+                    name = ""
+                    img_url = ""
 
-                for div_prod_name_elem in li_elem.find_all('div', 'product-name'):
-                    author = div_prod_name_elem.h2.a.string.strip()
-                    name = [name_anchor.string.strip() for name_anchor in div_prod_name_elem.find_all('a', 'name-link')][0]
+                    for div_prod_name_elem in li_elem.find_all('div', 'product-name'):
+                        author = div_prod_name_elem.h2.a.string.strip()
+                        name = [name_anchor.string.strip() for name_anchor in div_prod_name_elem.find_all('a', 'name-link')][0]
 
-                for img_elem in li_elem.find_all('img'):
-                    img_url = img_elem.get('src')[:-7]
+                    for img_elem in li_elem.find_all('img'):
+                        img_url = img_elem.get('src')[:-7]
 
-                print("AUTHOR:", author)
-                print("NAME:", name)
-                print("IMG:", img_url)
-                
-                author = re.sub('[^A-Za-z0-9 _-]+', '', author)
-                author = "-".join(author.lower().split())
-                author = "-".join(author.lower().split("-"))
+                    print("AUTHOR:", author)
+                    print("NAME:", name)
+                    print("IMG:", img_url)
+                    
+                    author = re.sub('[^A-Za-z0-9 _-]+', '', author)
+                    author = "-".join(author.lower().split())
+                    author = "-".join(author.lower().split("-"))
 
-                name = re.sub('[^A-Za-z0-9 _-]+', '', name)
-                name = "-".join(name.lower().split())
-                name = "-".join(name.lower().split("-"))
+                    name = re.sub('[^A-Za-z0-9 _-]+', '', name)
+                    name = "-".join(name.lower().split())
+                    name = "-".join(name.lower().split("-"))
 
-                ext = img_url.lower().split(".")[-1]
+                    ext = img_url.lower().split(".")[-1]
 
-                img_output_path = author + "_" + name + "." + ext
+                    img_output_path = author + "_" + name + "." + ext
 
-                print("Write", img_output_path)
-                print()
+                    print("Write", img_output_path)
+                    print()
 
-                crawler.download_img(img_url, img_output_path, HTTP_HEADERS)
+                    crawler.download_img(img_url, img_output_path, HTTP_HEADERS)
 
-                # Wait a litte bit
-                wt = abs(random.gauss(MEAN_TIME_SLEEP, STD_TIME_SLEEP))
-                print("Waiting {} seconds...".format(wt))
-                time.sleep(wt)
+                    # Wait a litte bit
+                    wt = abs(random.gauss(MEAN_TIME_SLEEP, STD_TIME_SLEEP))
+                    print("Waiting {} seconds...".format(wt))
+                    time.sleep(wt)
+                except:
+                    pass
 
 
 def main():
