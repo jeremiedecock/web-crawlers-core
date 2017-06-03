@@ -123,6 +123,15 @@ def walk(node):
             walk(child_node)
 
 
+def read_html_from_file(file_path):
+    """This function can be useful for offline debug"""
+
+    with open(file_path, 'rU') as fd:
+        html = fd.read()
+
+    return html
+
+
 def download_html(url, http_headers_dict={}):
     html = None
 
